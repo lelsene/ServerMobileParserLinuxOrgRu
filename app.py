@@ -154,7 +154,14 @@ def articles(offset=0):
                 article_text_length = 180
         article_mini_text = article_text[:article_text_length] + "..."
 
-        article_source = articlu.select_one("div.msg").contents[-1].select_one("a")["href"]
+        article_source = ""
+        article_contents = articlu.select_one("div.msg").contents
+        counter = len(article_contents) - 1
+        for i in range(counter, -1, -1):
+           isSource = article_contents[i].find("href")
+           if isSource != -1:
+              article_source =  article_contents[i].select_one("a")["href"]
+              break
 
         article_tags = ";".join([tag.get_text() for tag in articlu.select_one(".tags").select("a")])
 
